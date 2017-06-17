@@ -8,6 +8,7 @@ import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.util.Collector;
 import sun.awt.Mutex;
 
@@ -21,7 +22,7 @@ public class TF_IDF {
 
     static Map<String, Integer> MapWords;
 
-    public static int cont_colecao =0;
+    public static long cont_colecao =0;
 
     public static void main(String[] args) throws Exception {
 
@@ -37,7 +38,7 @@ public class TF_IDF {
 //				"AAA BBB CCC A B C A B C A B C"
 //				);
         DataSet<String> text = env.readTextFile("/home/loezer/flink/flink-java-project/teste3.txt");
-
+        cont_colecao = text.count();
         DataSet<Tuple2<String, Integer>> counts =
                 // split up the lines in pairs (2-tuples) containing: (word,1)
                 text.flatMap(new LineSplitter())
@@ -46,14 +47,13 @@ public class TF_IDF {
                         .sum(1);
 
         // execute and print result
-        long SizeOfCount = counts.count();
-        System.out.println(SizeOfCount);
-        System.out.println(Arrays.asList(MapWords));
-        System.out.println("Quantidade de linhas: ");
-        System.out.println(cont_colecao);
-        System.out.println("======================================");
+//        System.out.println(Arrays.asList(MapWords));
+//        System.out.println("Quantidade de linhas: ");
+//        System.out.println(cont_colecao);
+//        System.out.println("======================================");
+//        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-        DataSet<Tuple2<String, Double>> tfidf = counts.flatMap(new TFIDF());
+        DataSet<Tuple3<String,Integer, Double>> tfidf = counts.flatMap(new TFIDF());
 
         /// Se fizer depois desse print ai buga tudo T_T
         counts.print();
@@ -69,13 +69,12 @@ public class TF_IDF {
     //
     // 	User Functions
     // FlatMapFunction<Tipo Entrada, Tipo Saida>
-    public static final class TFIDF implements FlatMapFunction<Tuple2<String, Integer>, Tuple2<String, Double>>{
+    public static final class TFIDF implements FlatMapFunction<Tuple2<String, Integer>, Tuple3<String, Integer, Double>>{
         @Override
-        public void flatMap(Tuple2<String, Integer> in, Collector<Tuple2<String, Double>> out){
+        public void flatMap(Tuple2<String, Integer> in, Collector<Tuple3<String, Integer, Double>> out){
             Double tfidf = 0.0;
-            tfidf = in.f1 * (Math.log(cont_colecao)/MapWords.get(in.f0));
-
-            out.collect(new Tuple2<String, Double>(in.f0, tfidf));
+            tfidf = in.f1 * (Math.log10(cont_colecao) / MapWords.get(in.f0));
+            out.collect(new Tuple3<String,Integer, Double>(in.f0, MapWords.get(in.f0), tfidf));
         }
     }
     /**
@@ -88,10 +87,9 @@ public class TF_IDF {
         @Override
         public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
             // normalize and split the line
-            Boolean Ok = false;
             String[] tokens = value.toLowerCase().split("\\W+");
             Map<String, Integer>LineMap = new HashMap<String, Integer>();
-            cont_colecao++;
+
             // emit the pairs
             for (String token : tokens) {
                     synchronized (MapWords) {
