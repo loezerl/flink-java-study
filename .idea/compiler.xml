@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="flink-java-project" />
+        <module name="storm-starter" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="flink-java-project" target="1.7" />
+      <module name="storm-starter" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

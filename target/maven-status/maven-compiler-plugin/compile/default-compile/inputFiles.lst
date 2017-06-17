@@ -1,0 +1,4 @@
+/home/loezer/flink/flink-java-project/src/main/java/org/apache/flink/quickstart/BatchJob.java
+/home/loezer/flink/flink-java-project/src/main/java/org/apache/flink/quickstart/StreamingJob.java
+/home/loezer/flink/flink-java-project/src/main/java/org/apache/flink/quickstart/SocketTextStreamWordCount.java
+/home/loezer/flink/flink-java-project/src/main/java/org/apache/flink/quickstart/WordCount.java

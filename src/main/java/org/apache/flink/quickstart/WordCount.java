@@ -49,12 +49,13 @@ public class WordCount {
 		final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
 		// get input data
-		DataSet<String> text = env.fromElements(
-				"To be, or not to be,--that is the question:--",
-				"Whether 'tis nobler in the mind to suffer",
-				"The slings and arrows of outrageous fortune",
-				"Or to take arms against a sea of troubles,"
-				);
+//		DataSet<String> text = env.fromElements(
+//				"Lucas Loezer",
+//				"Lucas Fabre",
+//				"Lucas Lucas",
+//				"AAA BBB CCC A B C A B C A B C"
+//				);
+		DataSet<String> text = env.readTextFile("/home/loezer/flink/flink-java-project/teste3.txt");
 
 		DataSet<Tuple2<String, Integer>> counts =
 				// split up the lines in pairs (2-tuples) containing: (word,1)
@@ -65,7 +66,7 @@ public class WordCount {
 
 		// execute and print result
 		counts.print();
-
+		// env.execute();
 	}
 
 	//

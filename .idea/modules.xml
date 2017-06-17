@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/flink-java-project.iml" filepath="$PROJECT_DIR$/flink-java-project.iml" />
+      <module fileurl="file://$USER_HOME$/storm/examples/storm/examples/storm-starter/storm-starter.iml" filepath="$USER_HOME$/storm/examples/storm/examples/storm-starter/storm-starter.iml" />
     </modules>
   </component>
 </project>
