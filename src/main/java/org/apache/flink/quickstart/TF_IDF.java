@@ -37,6 +37,9 @@ public class TF_IDF {
 //				"Lucas Lucas",
 //				"AAA BBB CCC A B C A B C A B C"
 //				);
+        // -> Arrumar
+//        - Tentar armazenar o numero de documentos que o termo aparece em um Dataset
+//        - Por alguma razao ele executa mais de uma vez o linesplitter
         DataSet<String> text = env.readTextFile("/home/loezer/flink/flink-java-project/teste3.txt");
         cont_colecao = text.count();
         DataSet<Tuple2<String, Integer>> counts =
@@ -55,14 +58,9 @@ public class TF_IDF {
 
         DataSet<Tuple3<String,Integer, Double>> tfidf = counts.flatMap(new TFIDF());
 
-        /// Se fizer depois desse print ai buga tudo T_T
         counts.print();
         tfidf.print();
-//        Iterable<Tuple2<String, Integer>> it2 = counts.iterate(0);
-//        System.out.println(counts.iterate(3).f0);
-//        for(Tuple2<String, Integer> val : counts){
-//            System.out.println(val.f1);
-//        }
+
 //        env.execute();
     }
 
